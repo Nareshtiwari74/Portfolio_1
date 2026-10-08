@@ -1,0 +1,568 @@
+/* ==========================================================================
+   EDITORIAL — the type, rhythm and layout system the blog is built from.
+
+   STRUCTURE follows the Vercel brand guidelines (vercel.com/design.md):
+   a fixed set of type roles, one scale for every gap, prose held to a reading
+   measure while evidence (figures, tables, terminals) runs the full column,
+   monochrome by default, and no decorative chrome — no capsule badges for
+   ordinary metadata, no all-caps eyebrows, no nested cards propping up a weak
+   hierarchy.
+
+   COLOUR does NOT come from Vercel. Every value below resolves to a token in
+   theme.css, so the blog is the same page as the rest of the site and flips
+   with the theme like everything else.
+
+   Everything is scoped under `.editorial`; nothing here reaches other routes.
+   ========================================================================== */
+
+.editorial {
+  /* ---- Rhythm ---------------------------------------------------------- */
+  --ed-space-1: 4px;
+  --ed-space-2: 8px;
+  --ed-space-3: 12px;
+  --ed-space-4: 16px;
+  --ed-space-5: 20px;
+  --ed-space-6: 24px;
+  --ed-space-8: 32px;
+  --ed-space-10: 40px;
+  --ed-space-12: 48px;
+  --ed-space-16: 64px;
+
+  /* Four gap sizes, one meaning each: inside a group, between paragraphs,
+     between groups, between sections. Nothing picks its own spacing. */
+  --ed-flow-tight: var(--ed-space-2);
+  --ed-flow-copy: var(--ed-space-5);
+  --ed-flow-group: var(--ed-space-8);
+  --ed-flow-section: var(--ed-space-16);
+
+  /* ---- Measure --------------------------------------------------------- */
+  /* Prose stops here; evidence is free to run wider. */
+  --ed-reading: 68ch;
+
+  /* ---- Type roles ------------------------------------------------------ */
+  --ed-type-title: clamp(2rem, 1.35rem + 2.9vw, 2.5rem);
+  --ed-type-section: 1.5rem;
+  --ed-type-subsection: 1.25rem;
+  --ed-type-minor: 1rem;
+  --ed-type-lede: 1.125rem;
+  --ed-type-body: 1rem;
+  --ed-type-compact: 0.875rem;
+  --ed-type-meta: 0.8125rem;
+
+  --ed-weight-title: 450;
+  --ed-weight-heading: 500;
+  --ed-weight-strong: 600;
+
+  --ed-radius: 8px;
+  --ed-radius-small: 6px;
+
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--ed-type-body);
+  line-height: 1.7;
+  color: var(--content-secondary);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Visible focus everywhere, on the site's own ink rather than a browser blue. */
+.editorial :focus-visible {
+  outline: 2px solid var(--content);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   Flow & stacks — the only things allowed to own a gap.
+   -------------------------------------------------------------------------- */
+.ed-flow > * + * {
+  margin-block-start: var(--ed-flow-copy);
+}
+
+.ed-stack {
+  display: grid;
+  gap: var(--ed-flow-copy);
+}
+.ed-stack[data-gap="tight"] {
+  gap: var(--ed-flow-tight);
+}
+.ed-stack[data-gap="group"] {
+  gap: var(--ed-flow-group);
+}
+.ed-stack[data-gap="section"] {
+  gap: var(--ed-flow-section);
+}
+
+.ed-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--ed-space-3) var(--ed-space-5);
+}
+
+/* Twelve columns, so an index row can put its date in a lane of its own and
+   every title in the list starts on the same edge. */
+.ed-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--ed-space-6);
+}
+
+/* --------------------------------------------------------------------------
+   Type roles. Peers share a role; nothing is resized because its string is
+   longer or shorter than its neighbour's.
+   -------------------------------------------------------------------------- */
+.ed-title {
+  color: var(--content);
+  font-size: var(--ed-type-title);
+  font-weight: var(--ed-weight-title);
+  line-height: 1.08;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.ed-heading-24 {
+  color: var(--content);
+  font-size: var(--ed-type-section);
+  font-weight: var(--ed-weight-heading);
+  line-height: 1.3;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.ed-heading-20 {
+  color: var(--content);
+  font-size: var(--ed-type-subsection);
+  font-weight: var(--ed-weight-heading);
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.ed-heading-16 {
+  color: var(--content);
+  font-size: var(--ed-type-minor);
+  font-weight: var(--ed-weight-strong);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+
+.ed-lede {
+  max-width: var(--ed-reading);
+  color: var(--content-secondary);
+  font-size: var(--ed-type-lede);
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+/* Sentence-case names for a value or a group. Never a capsule, never uppercase. */
+.ed-label {
+  color: var(--content);
+  font-size: var(--ed-type-meta);
+  font-weight: var(--ed-weight-heading);
+  line-height: 1.4;
+}
+
+/* Dates, counts, read times — subordinate context, aligned on tabular figures
+   so a column of them reads as a column. */
+.ed-meta {
+  color: var(--content-secondary);
+  font-size: var(--ed-type-meta);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.4;
+}
+
+.ed-caption {
+  margin-block-start: var(--ed-space-3);
+  color: var(--content-secondary);
+  font-size: var(--ed-type-compact);
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.ed-mono {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-variant-ligatures: none;
+}
+
+/* --------------------------------------------------------------------------
+   Links.
+   -------------------------------------------------------------------------- */
+.ed-link {
+  color: var(--content);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--line-strong);
+  transition: text-decoration-color 0.15s ease;
+}
+/* Touch latches :hover after a tap, so hover styling only applies where the
+   pointer can actually hover. */
+@media (hover: hover) {
+  .ed-link:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
+/* A quiet link that only earns its underline on hover — for navigation rows,
+   where a permanent rule under every item would be noise. */
+.ed-link-quiet {
+  color: var(--content-secondary);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: transparent;
+  transition:
+    color 0.15s ease,
+    text-decoration-color 0.15s ease;
+}
+@media (hover: hover) {
+  .ed-link-quiet:hover {
+    color: var(--content);
+    text-decoration-color: var(--line-strong);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Prose. Post bodies are plain semantic HTML; the styling lives here so the
+   posts themselves stay readable as writing.
+   -------------------------------------------------------------------------- */
+.ed-prose {
+  max-width: var(--ed-reading);
+}
+
+.ed-prose > * + * {
+  margin-block-start: var(--ed-flow-copy);
+}
+
+.ed-prose p {
+  text-wrap: pretty;
+}
+
+.ed-prose strong,
+.ed-prose b {
+  color: var(--content);
+  font-weight: var(--ed-weight-strong);
+}
+
+.ed-prose em {
+  font-style: italic;
+}
+
+.ed-prose a {
+  color: var(--content);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--line-strong);
+  transition: text-decoration-color 0.15s ease;
+}
+@media (hover: hover) {
+  .ed-prose a:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
+.ed-prose h3 {
+  margin-block-start: var(--ed-flow-group);
+  color: var(--content);
+  font-size: var(--ed-type-subsection);
+  font-weight: var(--ed-weight-heading);
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+}
+
+.ed-prose h4 {
+  margin-block-start: var(--ed-flow-group);
+  color: var(--content);
+  font-size: var(--ed-type-minor);
+  font-weight: var(--ed-weight-strong);
+  line-height: 1.5;
+}
+
+.ed-prose ul,
+.ed-prose ol {
+  display: grid;
+  gap: var(--ed-space-3);
+  padding-inline-start: var(--ed-space-5);
+}
+
+.ed-prose ul {
+  list-style: disc;
+}
+.ed-prose ol {
+  list-style: decimal;
+}
+
+.ed-prose li::marker {
+  color: var(--content-subtle);
+}
+
+.ed-prose li > ul,
+.ed-prose li > ol {
+  margin-block-start: var(--ed-space-3);
+}
+
+/* Inline code: a hairline is enough to delimit a token — no filled chip. */
+.ed-prose code,
+.ed-code {
+  padding: 0.1em 0.35em;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background-color: var(--surface-raised);
+  color: var(--content);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.875em;
+  font-variant-ligatures: none;
+  word-break: break-word;
+}
+
+.ed-prose blockquote {
+  padding-inline-start: var(--ed-space-5);
+  border-inline-start: 1px solid var(--line-strong);
+  color: var(--content-secondary);
+}
+
+.ed-prose hr {
+  margin-block: var(--ed-flow-group);
+  border: 0;
+  border-block-start: 1px solid var(--line);
+}
+
+/* --------------------------------------------------------------------------
+   Evidence. These are the things allowed to break the reading measure,
+   because their job is to be read across, not down.
+   -------------------------------------------------------------------------- */
+.ed-figure {
+  margin: 0;
+}
+
+.ed-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--ed-radius);
+}
+
+/* An aside that genuinely groups — a rule, not a box inside a box. */
+.ed-aside {
+  padding-inline-start: var(--ed-space-6);
+  border-inline-start: 1px solid var(--line-strong);
+}
+
+/* A terminal is dark in both themes on purpose: it reads as a terminal
+   because it is dark. The tokens come from theme.css. */
+.ed-terminal {
+  padding: var(--ed-space-5);
+  overflow-x: auto;
+  border: 1px solid var(--terminal-line);
+  border-radius: var(--ed-radius-small);
+  background-color: var(--terminal);
+  color: var(--on-media);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: var(--ed-type-compact);
+  line-height: 1.7;
+  font-variant-ligatures: none;
+}
+
+.ed-terminal .ed-prompt {
+  color: var(--terminal-content);
+}
+
+.ed-terminal .ed-output {
+  color: var(--terminal-muted);
+}
+
+.ed-table-wrap {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+}
+
+.ed-table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--ed-type-compact);
+  line-height: 1.5;
+}
+
+.ed-table-wrap caption {
+  margin-block-end: var(--ed-space-3);
+  color: var(--content-muted);
+  font-size: var(--ed-type-compact);
+  text-align: start;
+}
+
+.ed-table-wrap th {
+  padding: var(--ed-space-2) var(--ed-space-4) var(--ed-space-2) 0;
+  border-block-end: 1px solid var(--line-strong);
+  color: var(--content);
+  font-weight: var(--ed-weight-heading);
+  text-align: start;
+  vertical-align: bottom;
+  white-space: nowrap;
+}
+
+.ed-table-wrap td {
+  padding: var(--ed-space-3) var(--ed-space-4) var(--ed-space-3) 0;
+  border-block-end: 1px solid var(--line);
+  vertical-align: baseline;
+}
+
+.ed-table-wrap :where(th, td):last-child {
+  padding-inline-end: 0;
+}
+
+.ed-numeric {
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+}
+
+/* Term-and-definition pairs. Replaces the row of identical metric boxes: the
+   relationship is name-to-meaning, so name-to-meaning is what it looks like. */
+.ed-defs {
+  display: grid;
+  gap: 0;
+  margin: 0;
+}
+
+.ed-defs > div {
+  display: grid;
+  gap: var(--ed-space-1) var(--ed-space-6);
+  padding-block: var(--ed-space-4);
+  border-block-start: 1px solid var(--line);
+}
+
+.ed-defs > div:last-child {
+  border-block-end: 1px solid var(--line);
+}
+
+.ed-defs dt {
+  color: var(--content);
+  font-weight: var(--ed-weight-heading);
+}
+
+.ed-defs dd {
+  margin: 0;
+  color: var(--content-secondary);
+  font-size: var(--ed-type-compact);
+  line-height: 1.6;
+}
+
+@media (min-width: 640px) {
+  .ed-defs > div {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    align-items: baseline;
+  }
+}
+
+/* A short ordered sequence of stages. A rule above and below is enough to set
+   it apart; a centred box in a mono font is a diagram pretending to be one. */
+.ed-sequence {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ed-space-2) var(--ed-space-3);
+  margin: 0;
+  padding-block: var(--ed-space-4);
+  border-block: 1px solid var(--line);
+  color: var(--content);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: var(--ed-type-compact);
+  line-height: 1.5;
+  list-style: none;
+}
+
+.ed-sequence > li + li::before {
+  content: "→";
+  margin-inline-end: var(--ed-space-3);
+  color: var(--content-subtle);
+}
+
+/* An ordered walkthrough. The number is the label; it does not need a circle. */
+.ed-steps {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: ed-step;
+}
+
+.ed-steps > li {
+  display: grid;
+  grid-template-columns: var(--ed-space-8) minmax(0, 1fr);
+  gap: var(--ed-space-4);
+  padding-block: var(--ed-space-4);
+  border-block-start: 1px solid var(--line);
+  counter-increment: ed-step;
+}
+
+.ed-steps > li:last-child {
+  border-block-end: 1px solid var(--line);
+}
+
+.ed-steps > li::before {
+  content: counter(ed-step, decimal-leading-zero);
+  color: var(--content-muted);
+  font-size: var(--ed-type-meta);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.7;
+}
+
+/* --------------------------------------------------------------------------
+   Chapters & rules.
+   -------------------------------------------------------------------------- */
+.ed-chapter + .ed-chapter {
+  margin-block-start: var(--ed-flow-section);
+}
+
+.ed-rule {
+  margin: 0;
+  border: 0;
+  border-block-start: 1px solid var(--line);
+}
+
+/* --------------------------------------------------------------------------
+   The short answer, the questions, and the receipts.
+
+   All three follow the same rule as the aside: a rule marks the boundary, not
+   a box. What sets them apart is that each one is written to be read on its
+   own, lifted out of the page it sits in.
+   -------------------------------------------------------------------------- */
+
+/* The answer the title promised, before the argument that earns it. */
+.ed-answer {
+  padding-inline-start: var(--ed-space-6);
+  border-inline-start: 2px solid var(--content);
+}
+
+.ed-answer .ed-prose {
+  color: var(--content);
+}
+
+/* One question per row, ruled like the definition list so the two read as the
+   same kind of object. */
+.ed-faq {
+  display: grid;
+  gap: 0;
+}
+
+.ed-faq > div {
+  padding-block: var(--ed-space-6);
+  border-block-start: 1px solid var(--line);
+}
+
+.ed-faq > div:last-child {
+  border-block-end: 1px solid var(--line);
+}
+
+.ed-sources {
+  display: grid;
+  gap: var(--ed-space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--ed-type-compact);
+}

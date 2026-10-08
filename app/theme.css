@@ -1,0 +1,345 @@
+/* ==========================================================================
+   THEME — the single source of truth for every colour in the portfolio.
+
+   HOW IT WORKS
+   1. `:root` holds the LIGHT values, `.dark` holds the DARK values.
+   2. `@theme inline` turns each one into a real Tailwind utility, so
+      `--color-surface-raised` gives you `bg-surface-raised`,
+      `text-surface-raised`, `border-surface-raised`, `ring-surface-raised`,
+      and opacity modifiers (`bg-surface-raised/50`) all work as normal.
+   3. Because the utilities point at `var(...)`, a class like `bg-surface`
+      flips automatically with the theme — you almost never need `dark:`.
+
+   TO CHANGE A COLOUR: edit the value in `:root` and/or `.dark` below.
+   Nothing else in the codebase should contain a raw colour.
+   ========================================================================== */
+
+:root {
+  /* ---- Surfaces -------------------------------------------------------- */
+  --surface: #ffffff; /* page background */
+  --surface-subtle: #fafafa; /* cards, list rows */
+  --surface-raised: #f5f5f5; /* buttons, badges, input wells */
+  --surface-strong: #e5e5e5; /* pressed / hovered raised surfaces */
+  --surface-sunken: #f5f5f5; /* insets, code blocks, scroll wells */
+  --surface-panel: #ffffff; /* modals & dropdowns (recedes in dark) */
+  --surface-float: #ffffff; /* tooltips & active tabs (lifts in dark) */
+  --surface-inverted: #171717; /* primary buttons, selected pills */
+
+  /* ---- Content (text & icons) ------------------------------------------ */
+  --content: #171717; /* headings, emphasis */
+  --content-secondary: #525252; /* body copy */
+  --content-muted: #737373; /* labels, captions, secondary meta */
+  --content-subtle: #a3a3a3; /* counts, timestamps, placeholders */
+  --content-inverted: #ffffff; /* text on --surface-inverted */
+
+  /* ---- Lines (borders & dividers) -------------------------------------- */
+  --line: #e5e5e5; /* default border */
+  --line-strong: #d4d4d4; /* hover / emphasised border */
+  --line-subtle: rgba(0, 0, 0, 0.1); /* hairlines over imagery */
+  --line-inverted: #171717; /* border on inverted surfaces */
+  /* Edge on content images (photos, avatars, album art). Pure black at low
+     alpha rather than a palette neutral, so no tint fringes the picture. */
+  --image-outline: oklch(0 0 0 / 0.1);
+  /* Deliberately identical in both themes: a bold outline that reads as a heavy
+     stroke in light and a quiet edge in dark. Used by the achievement card. */
+  --line-bold: #e5e5e5;
+
+  /* ---- Brand accent ---------------------------------------------------- */
+  --brand: #bae6fd; /* sky-200 — avatar ring, highlights, marks */
+  --brand-content: #075985; /* text sitting on --brand */
+
+  /* ---- Status: success -------------------------------------------------- */
+  --success: #22c55e; /* dots, indicators */
+  --success-content: #15803d; /* status text (4.6:1 on --surface) */
+  --success-surface: #f0fdf4; /* success banner background */
+  --success-line: #bbf7d0;
+
+  /* ---- Status: danger --------------------------------------------------- */
+  --danger: #ef4444;
+  --danger-content: #dc2626;
+  --danger-surface: #fef2f2;
+  --danger-line: #fecaca;
+
+  /* ---- Status: warning / info ------------------------------------------ */
+  --warning: #eab308; /* "idle" presence dot, beta indicators */
+  --warning-content: #a16207; /* status text (4.7:1 on --surface) */
+  --warning-surface: #fefce8; /* warning banner background */
+  --warning-line: #fef08a;
+  --info: #3b82f6; /* achievement + link accents */
+  --info-content: #3b82f6;
+  --merged: #a855f7; /* merged pull-request state */
+  --highlight: #f97316; /* hover emphasis in the experience timeline */
+
+  /* ---- Chip (dashed tech pills in the intro) ---------------------------- */
+  --chip: rgba(0, 0, 0, 0.1);
+  --chip-line: rgba(0, 0, 0, 0.4);
+
+  /* ---- Media overlays --------------------------------------------------- */
+  /* Deliberately identical in both themes: these sit on top of photography,
+     which does not change with the theme. Use with an opacity modifier,
+     e.g. bg-overlay/40, border-on-media/20. */
+  --overlay: #000000;
+  --on-media: #ffffff;
+
+  /* ---- Decorative accents ----------------------------------------------- */
+  --scribble: #f59e0b; /* hand-drawn underline in the hero */
+  --ripple: rgba(129, 140, 248, 0.8); /* avatar click ripple */
+  --ripple-active: rgba(96, 165, 250, 0.9); /* ripple in easter-egg state */
+  --ripple-glow: rgba(59, 130, 246, 0.2);
+  --ripple-glow-wide: rgba(59, 130, 246, 0.35);
+
+  /* ---- Terminal / code blocks ------------------------------------------- */
+  /* Also identical in both themes — a terminal reads as a terminal because it
+     is dark, so these must NOT flip with the theme. */
+  --terminal: #171717;
+  --terminal-line: #262626;
+  --terminal-content: #4ade80;
+  --terminal-muted: #a3a3a3; /* command output under the prompt */
+
+  /* ---- Glyph panel (the dot-matrix music disc in the hero) -------------- */
+  /* Identical in both themes, like the terminal above: the panel reads as a lit
+     LED grid, which only works while the disc itself stays dark. */
+  --glyph: #171717;
+  --glyph-foreground: #ffffff;
+
+  /* ---- Elevation ------------------------------------------------------- */
+  --shadow-hard: rgba(0, 0, 0, 0.15); /* the chunky "pressable" drop */
+  --elev-b6-md: 0 6px 16px rgba(0, 0, 0, 0.14); /* small round panels */
+  --elev-panel: 0 24px 60px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  --elev-float: 0 24px 60px rgba(0, 0, 0, 0.12);
+}
+
+.dark {
+  /* ---- Surfaces -------------------------------------------------------- */
+  --surface: #100e0e;
+  --surface-subtle: #100e0e;
+  --surface-raised: #100e0e;
+  --surface-strong: #404040;
+  --surface-sunken: #0f0f11;
+  --surface-panel: #111113;
+  --surface-float: #262626;
+  --surface-inverted: #ffffff;
+
+  /* ---- Content (text & icons) ------------------------------------------ */
+  --content: #ffffff;
+  --content-secondary: #a3a3a3;
+  --content-muted: #737373;
+  --content-subtle: #525252;
+  --content-inverted: #171717;
+
+  /* ---- Lines (borders & dividers) -------------------------------------- */
+  --line: #262626;
+  --line-strong: #404040;
+  --line-subtle: rgba(255, 255, 255, 0.1);
+  --line-bold: #404040;
+  --line-inverted: #262626;
+  --image-outline: oklch(1 0 0 / 0.1);
+
+  /* ---- Brand accent ---------------------------------------------------- */
+  --brand: #fcd34d; /* amber-300 */
+  --brand-content: #78350f;
+
+  /* ---- Status: success -------------------------------------------------- */
+  --success: #22c55e;
+  --success-content: #4ade80;
+  --success-surface: rgba(5, 46, 22, 0.4);
+  --success-line: rgba(20, 83, 45, 0.5);
+
+  /* ---- Status: danger --------------------------------------------------- */
+  --danger: #ef4444;
+  --danger-content: #f87171;
+  --danger-surface: rgba(69, 10, 10, 0.4);
+  --danger-line: rgba(127, 29, 29, 0.5);
+
+  /* ---- Status: warning / info ------------------------------------------ */
+  --warning: #eab308;
+  --warning-content: #facc15;
+  --warning-surface: rgba(66, 32, 6, 0.4);
+  --warning-line: rgba(113, 63, 18, 0.5);
+  --info: #3b82f6;
+  --info-content: #60a5fa;
+  --merged: #c084fc;
+  --highlight: #fb923c;
+
+  /* ---- Chip ------------------------------------------------------------ */
+  --chip: rgba(255, 255, 255, 0.15);
+  --chip-line: rgba(255, 255, 255, 0.45);
+
+  /* ---- Media overlays (unchanged from light — see note above) ----------- */
+  --overlay: #000000;
+  --on-media: #ffffff;
+
+  /* ---- Elevation ------------------------------------------------------- */
+  --shadow-hard: #161616;
+  --elev-b6-md: 0 6px 16px rgba(0, 0, 0, 0.5);
+  --elev-panel:
+    0 32px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  --elev-float: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* --------------------------------------------------------------------------
+   Tailwind utility generation.
+   Every entry below becomes a class you can use anywhere.
+   -------------------------------------------------------------------------- */
+@theme inline {
+  --color-surface: var(--surface);
+  --color-surface-subtle: var(--surface-subtle);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-strong: var(--surface-strong);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-surface-panel: var(--surface-panel);
+  --color-surface-float: var(--surface-float);
+  --color-surface-inverted: var(--surface-inverted);
+
+  --color-content: var(--content);
+  --color-content-secondary: var(--content-secondary);
+  --color-content-muted: var(--content-muted);
+  --color-content-subtle: var(--content-subtle);
+  --color-content-inverted: var(--content-inverted);
+
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-line-subtle: var(--line-subtle);
+  --color-line-inverted: var(--line-inverted);
+  --color-line-bold: var(--line-bold);
+  --color-image-outline: var(--image-outline);
+
+  --color-brand: var(--brand);
+  --color-brand-content: var(--brand-content);
+
+  --color-success: var(--success);
+  --color-success-content: var(--success-content);
+  --color-success-surface: var(--success-surface);
+  --color-success-line: var(--success-line);
+
+  --color-danger: var(--danger);
+  --color-danger-content: var(--danger-content);
+  --color-danger-surface: var(--danger-surface);
+  --color-danger-line: var(--danger-line);
+
+  --color-warning: var(--warning);
+  --color-warning-content: var(--warning-content);
+  --color-warning-surface: var(--warning-surface);
+  --color-warning-line: var(--warning-line);
+  --color-info: var(--info);
+  --color-info-content: var(--info-content);
+  --color-merged: var(--merged);
+  --color-highlight: var(--highlight);
+
+  --color-chip: var(--chip);
+  --color-chip-line: var(--chip-line);
+
+  --color-overlay: var(--overlay);
+  --color-on-media: var(--on-media);
+
+  --color-scribble: var(--scribble);
+
+  --color-terminal: var(--terminal);
+  --color-terminal-line: var(--terminal-line);
+  --color-terminal-content: var(--terminal-content);
+  --color-terminal-muted: var(--terminal-muted);
+
+  --color-glyph: var(--glyph);
+  --color-glyph-foreground: var(--glyph-foreground);
+
+  /* Elevation utilities: shadow-chunky, shadow-panel, shadow-float, … */
+  --shadow-chunky: 0 4px 0 0 var(--shadow-hard);
+  --shadow-chunky-sm: 0 2px 0 0 var(--shadow-hard);
+  --shadow-chunky-xs: 0 1px 0 0 var(--shadow-hard);
+  --shadow-panel: var(--elev-panel);
+  --shadow-float: var(--elev-float);
+  --shadow-b6-md: var(--elev-b6-md);
+}
+
+/* --------------------------------------------------------------------------
+   Composite component classes.
+   These bundle the repeated multi-property patterns. They only set colour and
+   elevation — spacing, radius and typography stay in the markup so the classes
+   compose freely with normal Tailwind utilities.
+   -------------------------------------------------------------------------- */
+@layer components {
+  /* The chunky press-down button used across the nav, footer and CTAs.
+     Add your own padding / radius / font utilities alongside it. */
+  .btn-chunky {
+    background-color: var(--surface);
+    color: var(--content-secondary);
+    box-shadow: 0 4px 0 0 var(--shadow-hard);
+    /* The button draws its own pressed state, so the default tap flash would
+       only double it. */
+    -webkit-tap-highlight-color: transparent;
+    transition-property: transform, box-shadow;
+    transition-duration: 150ms;
+    transition-timing-function: ease-out;
+  }
+  /* Touch latches :hover after a tap, which would leave the button stuck
+     half-pressed, so the hover step only applies to hover-capable pointers. */
+  @media (hover: hover) {
+    .btn-chunky:hover {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 0 var(--shadow-hard);
+    }
+  }
+  .btn-chunky:active {
+    transform: translateY(4px);
+    box-shadow: none;
+  }
+  .btn-chunky:disabled {
+    opacity: 0.5;
+    transform: none;
+    box-shadow: 0 4px 0 0 var(--shadow-hard);
+  }
+
+  /* Same press mechanic, but the high-contrast primary variant. */
+  .btn-chunky-primary {
+    background-color: var(--surface-inverted);
+    color: var(--content-inverted);
+    box-shadow: 0 4px 0 0 var(--shadow-hard);
+    -webkit-tap-highlight-color: transparent;
+    transition-property: transform, box-shadow, opacity;
+    transition-duration: 150ms;
+    transition-timing-function: ease-out;
+  }
+  @media (hover: hover) {
+    .btn-chunky-primary:hover {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 0 var(--shadow-hard);
+      opacity: 0.9;
+    }
+  }
+  .btn-chunky-primary:active {
+    transform: translateY(4px);
+    box-shadow: none;
+  }
+  .btn-chunky-primary:disabled {
+    opacity: 0.5;
+    transform: none;
+    box-shadow: 0 4px 0 0 var(--shadow-hard);
+  }
+
+  /* Floating surface: modals and dropdown menus. */
+  .panel {
+    background-color: var(--surface-panel);
+    border: 1px solid var(--line);
+    box-shadow: var(--elev-panel);
+  }
+
+  /* Dashed tech pill used in the intro paragraph. */
+  .chip {
+    background-color: var(--chip);
+    border: 2px dashed var(--chip-line);
+    color: var(--content);
+  }
+
+  /* Small pill / filter tag. `.tag-selected` is a modifier — keep `.tag` on the
+     element and add `.tag-selected` when it is active. */
+  .tag {
+    background-color: var(--surface);
+    border: 1px solid var(--line);
+    color: var(--content-secondary);
+  }
+  .tag-selected {
+    background-color: var(--surface-inverted);
+    border-color: var(--line-inverted);
+    color: var(--content-inverted);
+  }
+}

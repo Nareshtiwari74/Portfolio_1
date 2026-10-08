@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Illustrative successful payments: 900 initially, 960 after fallback</title>
+  <desc id="desc">Hypothetical batch of 1,000 payments. Initial attempts succeed for 900 payments; eligible fallback recovers another 60, giving 960 successes. The axis starts at zero. This is example data, not measured results or a guaranteed improvement.</desc>
+  <rect width="1280" height="720" rx="16" fill="#100e0e"/>
+  <g font-family="Arial, sans-serif">
+    <text x="65" y="85" fill="#fff" font-size="34" font-weight="700">Successful payments in a hypothetical batch</text>
+    <text x="65" y="135" fill="#aaa" font-size="24">1,000 payment attempts · Example data</text>
+    <g stroke="#343434" stroke-width="2">
+      <path d="M100 240h1060M100 390h1060M100 540h1060"/>
+    </g>
+    <g fill="#aaa" font-size="23" text-anchor="end">
+      <text x="85" y="248">1,000</text>
+      <text x="85" y="398">500</text>
+      <text x="85" y="548">0</text>
+    </g>
+    <rect x="300" y="270" width="240" height="270" rx="5" fill="#4b93c4"/>
+    <rect x="760" y="252" width="240" height="288" rx="5" fill="#9dceff"/>
+    <g fill="#fff" font-size="36" font-weight="700" text-anchor="middle">
+      <text x="420" y="250">900</text>
+      <text x="880" y="232">960</text>
+    </g>
+    <g fill="#ddd" font-size="27" text-anchor="middle">
+      <text x="420" y="585">Initial attempts</text>
+      <text x="880" y="585">After fallback</text>
+    </g>
+    <text x="65" y="665" fill="#aaa" font-size="23">Illustration only — not an industry result or a guaranteed improvement.</text>
+  </g>
+</svg>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Behind the Pay Button</title>
+  <desc id="desc">Payment routing and orchestration connect a Pay button to eligible payment providers.</desc>
+  <rect width="1600" height="900" fill="#100e0e"/>
+  <g font-family="Arial, sans-serif">
+    <text x="100" y="175" fill="#9dceff" font-size="28" letter-spacing="5">PAYMENT SYSTEMS</text>
+    <text x="100" y="300" fill="#fff" font-size="80" font-weight="700">Behind the Pay Button</text>
+    <text x="100" y="370" fill="#aaa" font-size="32">Routing, orchestration and payment correctness</text>
+    <g stroke="#35607e" stroke-width="3" fill="#062b49">
+      <rect x="100" y="490" width="310" height="160" rx="28"/>
+      <rect x="590" y="490" width="400" height="160" rx="28"/>
+      <rect x="1170" y="490" width="330" height="160" rx="28"/>
+    </g>
+    <g fill="#9dceff" font-size="42" font-weight="600" text-anchor="middle">
+      <text x="255" y="585">Pay</text>
+      <text x="790" y="585">Choose a route</text>
+      <text x="1335" y="585">Provider</text>
+    </g>
+    <g fill="none" stroke="#aaa" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M435 570h125m-16-16 16 16-16 16"/>
+      <path d="M1015 570h125m-16-16 16 16-16 16"/>
+    </g>
+    <text x="100" y="780" fill="#aaa" font-size="28">Naresh Tiwari</text>
+  </g>
+</svg>
