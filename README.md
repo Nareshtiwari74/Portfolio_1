@@ -1,7 +1,5 @@
 # Naresh Tiwari - Developer Portfolio
 
-![Portfolio Logo](public/profile-placeholder.svg)
-
 A developer portfolio for Naresh Tiwari, Software Developer.
 
 See [PERSONALIZATION.md](PERSONALIZATION.md) for confirmed content, missing details, and account setup. See [CREDITS.md](CREDITS.md) for design attribution.
