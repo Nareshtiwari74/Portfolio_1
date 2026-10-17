@@ -6,6 +6,7 @@ import { todayTime } from "@/lib/wakatime/wakatime-service";
 
 import ProfileAvatar from "./avatar-standard-4";
 import GetInTouch from "./GetInTouch";
+import IndiaClock from "./IndiaClock";
 import Intro from "./Intro";
 import PersonalInfo from "./PersonalInfo";
 import SocialLinks from "./SocialLinks";
@@ -45,7 +46,10 @@ const Hero = async () => {
 
         <GetInTouch />
 
-        <SocialLinks />
+        <div className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <SocialLinks />
+          <IndiaClock />
+        </div>
       </Stagger>
 
       <div className="mt-6">

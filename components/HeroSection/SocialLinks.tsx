@@ -153,7 +153,7 @@ const WithPreview = ({ social }: { social: Social }) => {
 };
 
 const SocialLinks = () => (
-  <div className="mt-8 flex gap-2 font-bold">
+  <div className="flex gap-2 font-bold">
     {socials.map((social) =>
       social.preview ? (
         <WithPreview key={social.label} social={social} />
