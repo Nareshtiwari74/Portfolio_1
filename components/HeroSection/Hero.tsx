@@ -8,7 +8,6 @@ import GetInTouch from "./GetInTouch";
 import Intro from "./Intro";
 import PersonalInfo from "./PersonalInfo";
 import SocialLinks from "./SocialLinks";
-import SongActivity from "./SongActivity";
 
 const Hero = async () => {
   // Fetched here rather than in the client badge so the WakaTime key stays on
@@ -48,8 +47,6 @@ const Hero = async () => {
         <SocialLinks />
 
         <div className="pt-15 md:pt-10">
-          <SongActivity />
-
           <PersonalInfo />
         </div>
       </Stagger>

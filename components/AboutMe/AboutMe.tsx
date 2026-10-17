@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import SongActivity from "@/components/HeroSection/SongActivity";
 import { Stagger } from "@/components/ui/Reveal";
 import { introduction, mainSkills } from "@/lib/personal-content";
 import { siteConfig } from "@/lib/site";
@@ -57,6 +58,9 @@ const AboutMe = () => {
               </div>
             </div>
           </div>
+        </div>
+        <div className="px-6">
+          <SongActivity />
         </div>
       </Stagger>
 
