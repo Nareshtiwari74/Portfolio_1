@@ -1,13 +1,13 @@
 /**
  * The full-bleed dashed band that separates the home page's sections. Sits
- * absolutely inside a `relative` section wrapper; `position` picks which edge
- * of that wrapper it hangs from.
+ * absolutely inside a `relative` section wrapper, or occupies its own space
+ * in the layout with `flow` so it follows content as the section changes.
  */
 const POSITIONS = {
   top: "",
   bottom: "bottom-0",
   "bottom-1": "bottom-1",
-  "bottom-63": "bottom-70 md:bottom-63",
+  flow: "",
 } as const;
 
 const DashedRule = ({
@@ -17,7 +17,7 @@ const DashedRule = ({
 }) => (
   <div
     aria-hidden
-    className={`border-line-strong absolute left-0 z-99 h-10 w-screen border border-x-0 border-dashed md:left-1/2 md:w-[125vw] md:-translate-x-1/2 dark:border-[#272727] ${POSITIONS[position]}`}
+    className={`border-line-strong pointer-events-none z-0 h-10 w-screen border border-x-0 border-dashed md:w-[125vw] dark:border-[#272727] ${position === "flow" ? "relative left-1/2 -translate-x-1/2" : "absolute left-0 md:left-1/2 md:-translate-x-1/2"} ${POSITIONS[position]}`}
   />
 );
 

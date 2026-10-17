@@ -57,14 +57,6 @@ export default function Calbutton() {
     );
   }
 
-  if (!integrationConfig.calLink) {
-    return (
-      <a href={`mailto:${siteConfig.email}`} className={className}>
-        {content}
-      </a>
-    );
-  }
-
   return (
     <button
       data-cal-namespace="connect"

@@ -31,7 +31,8 @@ export const siteConfig = {
 export const integrationConfig = {
   backendUrl:
     process.env.NEXT_PUBLIC_PORTFOLIO_API_URL?.replace(/\/$/, "") || "",
-  calLink: process.env.NEXT_PUBLIC_CAL_LINK || "",
+  calLink:
+    process.env.NEXT_PUBLIC_CAL_LINK?.trim() || "naresh-tiwari-vfj1ak/30min",
   bookingUrl: process.env.NEXT_PUBLIC_BOOKING_URL?.trim() || "",
   discordUserId: process.env.NEXT_PUBLIC_DISCORD_USER_ID || "",
   activityEnabled: process.env.PORTFOLIO_ACTIVITY_ENABLED === "true",

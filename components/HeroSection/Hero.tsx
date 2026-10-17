@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import DashedRule from "@/components/ui/DashedRule";
 import { Reveal, Stagger } from "@/components/ui/Reveal";
 import { todayTime } from "@/lib/wakatime/wakatime-service";
 
@@ -45,11 +46,15 @@ const Hero = async () => {
         <GetInTouch />
 
         <SocialLinks />
-
-        <div className="pt-15 md:pt-10">
-          <PersonalInfo />
-        </div>
       </Stagger>
+
+      <div className="mt-6">
+        <DashedRule position="flow" />
+      </div>
+
+      <Reveal immediate delay={0.55}>
+        <PersonalInfo />
+      </Reveal>
 
       <div className="h-10"></div>
     </section>

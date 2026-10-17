@@ -22,14 +22,58 @@ const contactLinks = [
   { href: mailto, label: "Email", Icon: Mail },
 ];
 
-const friends = [
-  { name: "GitHub", url: siteConfig.github, image: "/social-github.svg" },
-  { name: "LeetCode", url: siteConfig.leetcode, image: "/social-leetcode.svg" },
-  { name: "X", url: siteConfig.x, image: "/social-x.svg" },
+const onlineProfiles = [
+  {
+    name: "GitHub",
+    url: siteConfig.github,
+    logo: (
+      <Image
+        src="/github-logo.png"
+        alt=""
+        width={20}
+        height={20}
+        className="size-5 object-contain dark:invert"
+      />
+    ),
+  },
+  {
+    name: "LeetCode",
+    url: siteConfig.leetcode,
+    logo: (
+      <Image
+        src="/leetcode-logo.svg"
+        alt=""
+        width={20}
+        height={20}
+        className="size-5 rounded-sm bg-white object-contain p-0.5"
+      />
+    ),
+  },
+  {
+    name: "X",
+    url: siteConfig.x,
+    logo: (
+      <Image
+        src="/x-logo.jpg"
+        alt=""
+        width={20}
+        height={20}
+        className="size-5 rounded-sm object-contain"
+      />
+    ),
+  },
   {
     name: "Instagram",
     url: siteConfig.instagram,
-    image: siteConfig.profileImage,
+    logo: (
+      <Image
+        src="/instagram-logo.png"
+        alt=""
+        width={20}
+        height={20}
+        className="size-5 object-contain"
+      />
+    ),
   },
 ];
 
@@ -80,26 +124,20 @@ const Footer = () => {
           <div>
             <p className="text-content-muted text-[10px]">find me online</p>
             <div className="mt-1 flex gap-2">
-              {friends.map((friend) => (
-                <div key={friend.name} className="group relative">
+              {onlineProfiles.map((profile) => (
+                <div key={profile.name} className="group relative">
                   <Link
-                    href={friend.url}
+                    href={profile.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block size-7 overflow-hidden rounded-[5px]"
+                    aria-label={profile.name}
+                    className="text-content-secondary hover:text-content focus-visible:text-content flex size-7 items-center justify-center rounded-[5px] opacity-80 transition-opacity duration-150 ease-out hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2"
                   >
-                    <Image
-                      src={friend.image}
-                      alt={friend.name}
-                      width={28}
-                      height={28}
-                      unoptimized
-                      className="outline-image-outline h-full w-full rounded-[5px] object-contain opacity-80 outline -outline-offset-1 transition-opacity duration-150 ease-out group-hover:opacity-100"
-                    />
+                    {profile.logo}
                   </Link>
 
-                  <HoverTooltip className="-top-9 px-2 py-1 text-[10px] font-medium capitalize">
-                    {friend.name}
+                  <HoverTooltip className="-top-9 px-2 py-1 text-[10px] font-medium group-focus-within:opacity-100">
+                    {profile.name}
                   </HoverTooltip>
                 </div>
               ))}

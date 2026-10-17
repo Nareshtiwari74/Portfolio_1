@@ -101,7 +101,6 @@ const HomePage = () => (
         wrapped in a single block-level FadeIn. */}
     <div className="relative">
       <Hero />
-      <DashedRule position="bottom-63" />
       <DashedRule position="bottom" />
     </div>
 
