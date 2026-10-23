@@ -23,6 +23,13 @@ export type ProjectType = {
   /** Optional public API link, shown alongside the live application. */
   apiLink?: string;
   githubLink: string;
+  caseStudy?: {
+    highlights: { title: string; detail: string }[];
+    flow: { title: string; detail: string }[];
+    deployment: string;
+    roadmap: string;
+    demoNote: string;
+  };
   /** Optional "why I built this" notes, shown as a list in the project modal. */
   why?: string[];
   /**
@@ -40,10 +47,11 @@ export const projects: ProjectType[] = [
     id: "distributed-file-storage",
     name: "Distributed File Storage System",
     tagline: "Secure File Storage",
+    badge: "Backend",
     description:
-      "Upload, manage, and securely access files, with deduplication to reduce storage usage.",
+      "A full-stack file storage application built with Java 21 and Spring Boot. Files live in S3-compatible object storage, while PostgreSQL tracks their metadata and ownership.",
     shortDescription:
-      "Upload, manage, and securely access files, with deduplication to reduce storage usage.",
+      "Secure file uploads with JWT authentication, per-user access, and S3-compatible cloud storage. Built with Java 21, Spring Boot, and React.",
     image: "/project-img/distributed-file-storage.png",
     imageGradient: { from: GRADIENT_FROM, via: "#ABEC4D", to: "#A3E925" },
     tech: ["Java", "Spring Boot", "React", "PostgreSQL", "Docker"],
@@ -51,5 +59,41 @@ export const projects: ProjectType[] = [
     link: "https://storage.nareshdev.space",
     apiLink: "https://api1.nareshdev.space",
     githubLink: "https://github.com/Nareshtiwari74/distributed-file-storage",
+    caseStudy: {
+      highlights: [
+        {
+          title: "Private by design",
+          detail:
+            "JWT authentication, BCrypt password hashing, and ownership checks on every file operation.",
+        },
+        {
+          title: "Integrity recorded",
+          detail:
+            "SHA-256 checksums computed on upload, with a 10 MB limit and clear errors for oversized files.",
+        },
+        {
+          title: "Storage that can change",
+          detail:
+            "A StorageService interface connects to MinIO locally and Supabase in production without changing the file workflow.",
+        },
+        {
+          title: "Built to be tested",
+          detail:
+            "JUnit 5 and Mockito for unit tests; Testcontainers for integration tests; Flyway for versioned database migrations.",
+        },
+      ],
+      flow: [
+        { title: "React", detail: "Choose a file" },
+        { title: "Spring Boot", detail: "Authenticate & validate" },
+        { title: "Object storage", detail: "Save file bytes" },
+        { title: "PostgreSQL", detail: "Track owner & metadata" },
+      ],
+      deployment:
+        "React on Vercel · Spring Boot on Render · PostgreSQL on Neon · Object storage on Supabase",
+      roadmap:
+        "Multi-node replication, failover, and self-healing are planned. The current backend is a modular monolith with a swappable storage layer.",
+      demoNote:
+        "Try it: register, upload a file up to 10 MB, then download or delete it. The backend runs on a free tier; the first request after inactivity may take 30–50 seconds.",
+    },
   },
 ];

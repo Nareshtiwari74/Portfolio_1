@@ -44,6 +44,16 @@ const Hero = async () => {
 
         <Intro />
 
+        <div className="mt-4">
+          <p className="border-line bg-success/10 text-content-secondary inline-flex max-w-full items-start gap-2 rounded-xl border px-3 py-2 text-xs leading-relaxed sm:items-center sm:rounded-full sm:text-sm">
+            <span
+              className="bg-success mt-1.5 size-2 shrink-0 rounded-full sm:mt-0"
+              aria-hidden="true"
+            />
+            <span>Open to entry-level Backend Developer roles</span>
+          </p>
+        </div>
+
         <GetInTouch />
 
         <div className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">

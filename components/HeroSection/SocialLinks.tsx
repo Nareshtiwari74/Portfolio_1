@@ -1,7 +1,9 @@
 "use client";
 
-import { type ReactNode, useId, useState } from "react";
+import { type ReactNode, useEffect, useId, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
+import Image from "next/image";
 import Link from "next/link";
 
 import { motion } from "motion/react";
@@ -42,6 +44,22 @@ type Social = {
 };
 
 const socials: Social[] = [
+  {
+    label: "LinkedIn",
+    href: siteConfig.linkedin,
+    path: PATHS.linkedin,
+    preview: (
+      <div className="border-line-strong/90 overflow-hidden rounded-xl border-2 bg-white">
+        <Image
+          src="/social-linkedin.png"
+          alt="Naresh Tiwari LinkedIn profile headline"
+          width={650}
+          height={100}
+          className="h-auto w-full"
+        />
+      </div>
+    ),
+  },
   {
     label: "X",
     href: siteConfig.x,
@@ -108,44 +126,73 @@ const WithPreview = ({ social }: { social: Social }) => {
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
   const isOpen = hovered || focused;
+  const anchorRef = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState<{
+    left: number;
+    top: number;
+  } | null>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const update = () => {
+      const bounds = anchorRef.current?.getBoundingClientRect();
+      if (!bounds) return;
+      setPosition({
+        left: Math.max(12, Math.min(bounds.left, window.innerWidth - 312)),
+        top: bounds.top - 12,
+      });
+    };
+    update();
+    window.addEventListener("resize", update);
+    window.addEventListener("scroll", update, true);
+    return () => {
+      window.removeEventListener("resize", update);
+      window.removeEventListener("scroll", update, true);
+    };
+  }, [isOpen]);
 
   return (
-    <div className="relative">
-      <motion.div
-        id={previewId}
-        role="tooltip"
-        aria-hidden={!isOpen}
-        initial={false}
-        animate={isOpen ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
-        transition={{ duration: 0.2, ease: "easeOut" }}
-        className="pointer-events-none absolute bottom-10 z-20 hidden w-[300px] md:block"
-      >
-        {typeof social.preview === "string" ? (
-          <SocialImageContainer image={social.preview} />
-        ) : (
-          social.preview
+    <div
+      ref={anchorRef}
+      className="relative"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+      onKeyDown={(event) => {
+        if (event.key === "Escape") {
+          setHovered(false);
+          setFocused(false);
+        }
+      }}
+    >
+      {isOpen &&
+        position &&
+        createPortal(
+          <div
+            id={previewId}
+            role="tooltip"
+            className="pointer-events-none fixed z-[200] w-[300px] max-w-[calc(100vw-24px)] -translate-y-full drop-shadow-xl"
+            style={{ left: position.left, top: position.top }}
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.18 }}
+            >
+              {typeof social.preview === "string" ? (
+                <SocialImageContainer image={social.preview} />
+              ) : (
+                social.preview
+              )}
+            </motion.div>
+          </div>,
+          document.body,
         )}
-      </motion.div>
-      {/* Mouse only: a tap fires pointerenter too, and the preview would
-          then stay stuck open on a touch screen. */}
-      <div
-        onPointerEnter={(e) => e.pointerType === "mouse" && setHovered(true)}
-        onPointerLeave={() => setHovered(false)}
-        onFocus={(event) => {
-          if (event.target.matches(":focus-visible")) setFocused(true);
-        }}
-        onBlur={() => setFocused(false)}
-        onKeyDown={(event) => {
-          if (event.key === "Escape") {
-            setHovered(false);
-            setFocused(false);
-          }
-        }}
-        className="opacity-60"
-      >
+      <div className="opacity-80 hover:opacity-100">
         <SocialIconLink
           {...social}
-          describedBy={isOpen ? previewId : undefined}
+          describedBy={isOpen && position ? previewId : undefined}
         />
       </div>
     </div>

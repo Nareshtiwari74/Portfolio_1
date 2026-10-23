@@ -5,9 +5,18 @@ import { useState } from "react";
 import { roles } from "./experienceData";
 import ExperienceRow from "./ExperienceRow";
 
-/** Accordion of career rows; at most one is open at a time. */
+/** Career rows that can be expanded and collapsed independently. */
 const ExperienceList = () => {
-  const [openId, setOpenId] = useState<string | null>(null);
+  const [openIds, setOpenIds] = useState<Set<string>>(() => new Set());
+
+  const toggleExperience = (id: string) => {
+    setOpenIds((previous) => {
+      const next = new Set(previous);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
 
   return (
     <div className="border-line bg-surface-subtle divide-line divide-y overflow-hidden rounded-2xl border">
@@ -25,8 +34,8 @@ const ExperienceList = () => {
         <ExperienceRow
           key={item.id}
           item={item}
-          isOpen={openId === item.id}
-          onToggle={() => setOpenId(openId === item.id ? null : item.id)}
+          isOpen={openIds.has(item.id)}
+          onToggle={() => toggleExperience(item.id)}
         />
       ))}
     </div>

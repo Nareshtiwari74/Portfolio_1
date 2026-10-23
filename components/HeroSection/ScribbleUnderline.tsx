@@ -1,26 +1,15 @@
 "use client";
 
-import { useState } from "react";
-
 import { motion, useReducedMotion } from "motion/react";
 
-const j = (base: number, range = 1) =>
-  +(base + (Math.random() - 0.5) * range * 2).toFixed(2);
+// Fixed hand-drawn paths keep server HTML and client hydration identical.
+const PATH_1 =
+  "M0,4.2 C8,1.8 18,4.6 30,2.7 C42,5.1 54,2 66,4.4 C76,2.2 88,4.7 97,2.8 C99,3.4 100,3.6";
+const PATH_2 =
+  "M1,5.2 C12,3 26,6 40,3.7 C53,5.9 65,2.8 78,5.4 C87,3.1 94,5.6 99.5,4.2";
 
 const ScribbleUnderline = () => {
-  // Drawing the stroke on is motion too, and pathLength is not a transform,
-  // so MotionConfig would leave it running.
   const reduceMotion = useReducedMotion();
-
-  const [path1] = useState(
-    () =>
-      `M0,${j(4, 0.5)} C8,${j(2.5)} 18,${j(4)} 30,${j(3)} C42,${j(4.5)} 54,${j(2.5)} 66,${j(4)} C76,${j(2.5)} 88,${j(4)} 97,${j(3)} C99,${j(3)} 100,${j(3.5, 0.5)}`,
-  );
-
-  const [path2] = useState(
-    () =>
-      `M1,${j(5, 0.5)} C12,${j(3.5)} 26,${j(5.5)} 40,${j(4)} C53,${j(5.5)} 65,${j(3.5)} 78,${j(5)} C87,${j(3.5)} 94,${j(5)} 99.5,${j(4, 0.5)}`,
-  );
 
   return (
     <svg
@@ -30,25 +19,23 @@ const ScribbleUnderline = () => {
       aria-hidden="true"
     >
       <motion.path
-        d={path1}
+        d={PATH_1}
         fill="none"
         className="stroke-scribble"
         strokeWidth="1.8"
         strokeLinecap="round"
         strokeLinejoin="round"
-        suppressHydrationWarning
         initial={reduceMotion ? false : { pathLength: 0, opacity: 0 }}
         animate={{ pathLength: 1, opacity: 1 }}
         transition={{ delay: 0.25, duration: 0.65, ease: "easeOut" }}
       />
       <motion.path
-        d={path2}
+        d={PATH_2}
         fill="none"
         className="stroke-scribble"
         strokeWidth="1.2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        suppressHydrationWarning
         initial={reduceMotion ? false : { pathLength: 0, opacity: 0 }}
         animate={{ pathLength: 1, opacity: 0.6 }}
         transition={{ delay: 0.4, duration: 0.55, ease: "easeOut" }}

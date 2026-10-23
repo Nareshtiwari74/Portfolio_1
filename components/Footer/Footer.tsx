@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { CodeXml, Github, Instagram, Mail } from "lucide-react";
+import { CodeXml, Github, Instagram, Linkedin, Mail } from "lucide-react";
 
+import SongActivity from "@/components/HeroSection/SongActivity";
 import HoverTooltip from "@/components/ui/HoverTooltip";
 import { siteConfig } from "@/lib/site";
 
@@ -12,6 +13,7 @@ import { VisitorCounter } from "./VisitorCounter";
 const mailto = `mailto:${siteConfig.email}`;
 
 const contactLinks = [
+  { href: siteConfig.linkedin, label: "LinkedIn", Icon: Linkedin },
   { href: siteConfig.github, label: "GitHub", Icon: Github },
   {
     href: siteConfig.leetcode,
@@ -23,6 +25,11 @@ const contactLinks = [
 ];
 
 const onlineProfiles = [
+  {
+    name: "LinkedIn",
+    url: siteConfig.linkedin,
+    logo: <Linkedin size={20} aria-hidden="true" />,
+  },
   {
     name: "GitHub",
     url: siteConfig.github,
@@ -102,7 +109,7 @@ const Footer = () => {
               {siteConfig.email}
             </a>
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-wrap justify-center gap-3">
             {contactLinks.map(({ href, label, Icon }) => (
               <a
                 key={label}
@@ -118,6 +125,15 @@ const Footer = () => {
 
         <div className="h-10 w-full" />
       </div>
+
+      <details className="border-line mx-auto w-full max-w-md rounded-xl border px-4 py-3">
+        <summary className="text-content-muted hover:text-content cursor-pointer text-sm font-medium">
+          A little personal · On my playlist
+        </summary>
+        <div className="mt-3">
+          <SongActivity />
+        </div>
+      </details>
 
       <div className="pt-8 text-center">
         <div className="mt-2 flex justify-between">

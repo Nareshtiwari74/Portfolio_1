@@ -40,7 +40,7 @@ const ProjectsGrid = ({
   const reduceMotion = useReducedMotion();
   const [showAll, setShowAll] = useState(false);
   const [selectedProject, setSelectedProject] = useState<ProjectType | null>(
-    null
+    null,
   );
 
   const visibleProjects = showAll ? projects : projects.slice(0, initialCount);
@@ -76,7 +76,7 @@ const ProjectsGrid = ({
               // Stagger within a batch: the "Show more" cards restart from 0 so
               // they don't inherit a long delay from their absolute index.
               ((index < initialCount ? index : index - initialCount) % 4) *
-                ITEM_STAGGER
+                ITEM_STAGGER,
             )}
             viewport={revealViewport}
           >

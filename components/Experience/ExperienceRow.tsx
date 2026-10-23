@@ -31,7 +31,7 @@ const PrRowSkeleton = () => (
 );
 
 const Bullet = ({ children }: { children: React.ReactNode }) => (
-  <li className="text-content-secondary flex items-start gap-3 text-sm">
+  <li className="text-content-secondary flex items-start gap-3 text-[15px] dark:text-neutral-200">
     <ChevronRight size={16} className="text-content-subtle mt-0.5 shrink-0" />
     <span className="leading-relaxed">{children}</span>
   </li>
@@ -66,26 +66,26 @@ const ExperienceRow = ({ item, isOpen, onToggle }: RowProps) => {
         }`}
       >
         {/* Logo */}
-        <span className="border-line text-content grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-full border p-[7px]">
+        <span className="border-line grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-full border bg-white p-1.5 saturate-50 brightness-90 dark:brightness-[0.65]">
           {item.logo}
         </span>
 
         {/* Org + role */}
         <span className="min-w-0 flex-1">
-          <span className="text-content block text-[15px] leading-snug font-bold">
+          <span className="text-content block text-[15px] leading-snug font-bold dark:text-white">
             {item.org}
           </span>
-          <span className="text-content-muted mt-0.5 block text-sm leading-snug">
+          <span className="text-content mt-0.5 block text-[15px] leading-snug dark:text-white">
             {item.role}
           </span>
 
           {/* Meta on mobile: its own row under the title, so the title is free
               to use the full card width instead of sharing it with a column. */}
           <span className="mt-2 flex items-center justify-between gap-3 sm:hidden">
-            <span className="text-content-subtle font-mono text-[9px] tracking-widest uppercase">
+            <span className="text-content-secondary text-xs font-medium">
               {item.location}
             </span>
-            <span className="text-content-secondary text-[11px] whitespace-nowrap">
+            <span className="text-content-secondary text-[13px] font-medium whitespace-nowrap">
               {item.period}
             </span>
           </span>
@@ -93,10 +93,10 @@ const ExperienceRow = ({ item, isOpen, onToggle }: RowProps) => {
 
         {/* Meta from sm up: a right-hand column beside the title. */}
         <span className="hidden shrink-0 flex-col items-end text-right sm:flex">
-          <span className="text-content-secondary text-sm whitespace-nowrap">
+          <span className="text-content-secondary text-[15px] font-medium whitespace-nowrap">
             {item.period}
           </span>
-          <span className="text-content-subtle mt-0.5 font-mono text-[10px] tracking-widest uppercase">
+          <span className="text-content-secondary mt-0.5 text-[13px] font-medium">
             {item.location}
           </span>
         </span>

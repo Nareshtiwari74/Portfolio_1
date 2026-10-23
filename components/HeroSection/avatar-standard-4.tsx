@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useClickSound } from "@/hooks/useClickSound";
@@ -10,8 +10,6 @@ import type { CodeTime } from "@/types/wakatime";
 import { siteConfig } from "@/lib/site";
 
 import ActiveStatus from "./ActiveStatus";
-
-const RIPPLES = [0, 0.15, 0.3];
 
 /**
  * The handwritten note beside the avatar. Sits to the right on mobile and to
@@ -73,82 +71,92 @@ const Annotation = ({
 const ProfileAvatar = ({ codeTime }: { codeTime: CodeTime | null }) => {
   const playClick = useClickSound("/click.mp3");
   const [easterState, setEasterState] = useState(false);
-  const [sparkleKey, setSparkleKey] = useState(0);
+  const reduceMotion = useReducedMotion();
 
   const handleClick = () => {
     playClick();
     setEasterState((prev) => !prev);
-    setSparkleKey((k) => k + 1);
   };
 
   return (
-    <motion.div
-      onClick={handleClick}
-      className="relative w-fit cursor-pointer"
-      whileTap={{ scale: 0.96 }}
-      transition={{ duration: 0.15, ease: "easeOut" }}
-    >
-      {/* Ripple burst on click */}
-      {sparkleKey > 0 &&
-        RIPPLES.map((delay, i) => (
-          <motion.span
-            key={`${sparkleKey}-${i}`}
-            className="pointer-events-none absolute inset-0 z-20 rounded-full"
-            style={{
-              border: `2px solid ${easterState ? "var(--ripple-active)" : "var(--ripple)"}`,
-            }}
-            initial={{ scale: 1, opacity: 0.8 }}
-            animate={{ scale: 1.4, opacity: 0 }}
-            transition={{ duration: 0.7, delay, ease: "easeOut" }}
-          />
-        ))}
-
-      {/* Avatar pops on toggle. The squash stays within 0.95–1.05 so it reads
-          as a nudge rather than a rubber ball. */}
-      <motion.div
-        className="relative z-10"
-        animate={
-          easterState
-            ? { scale: [1, 1.05, 0.97, 1.02, 1], rotate: [0, -6, 6, -3, 0] }
-            : { scale: [1, 0.96, 1.02, 1], rotate: 0 }
-        }
-        transition={{ duration: 0.3, ease: "easeInOut" }}
+    <div className="relative w-fit">
+      <button
+        type="button"
+        onClick={handleClick}
+        aria-label="Show alternate profile photo"
+        aria-pressed={easterState}
+        className="block cursor-pointer rounded-full focus-visible:outline-2 focus-visible:outline-offset-4"
       >
-        {/* Blue focus border + glow ring in easter state */}
-        <AnimatePresence>
-          {easterState && (
-            <motion.div
-              className="pointer-events-none absolute inset-0 rounded-full"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{
-                opacity: 0,
-                scale: 0.95,
-                transition: { duration: 0.15, ease: "easeOut" },
-              }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              style={{
-                outline: "3px solid var(--ripple-active)",
-                outlineOffset: "4px",
-                boxShadow:
-                  "0 0 0 6px var(--ripple-glow), 0 0 22px 6px var(--ripple-glow-wide)",
-              }}
-            />
+        <Avatar className="overflow-visible bg-transparent">
+          {[siteConfig.profileImage, siteConfig.easterEggImage].map(
+            (src, imageIndex) => {
+              const active = easterState === (imageIndex === 1);
+              return (
+                <span
+                  key={src}
+                  className="absolute inset-0 grid grid-cols-12 grid-rows-12"
+                  aria-hidden={!active}
+                >
+                  {Array.from({ length: 144 }, (_, index) => {
+                    const column = index % 12;
+                    const row = Math.floor(index / 12);
+                    const order = (index * 53) % 144;
+                    const angle = ((index * 137.5) / 180) * Math.PI;
+                    const distance = 20 + ((index * 17) % 45);
+                    return (
+                      <motion.span
+                        key={index}
+                        className="relative overflow-hidden"
+                        initial={false}
+                        animate={{
+                          opacity: active ? 1 : 0,
+                          x:
+                            active || reduceMotion
+                              ? 0
+                              : Math.cos(angle) * distance,
+                          y:
+                            active || reduceMotion
+                              ? 0
+                              : Math.sin(angle) * distance,
+                          rotate:
+                            active || reduceMotion
+                              ? 0
+                              : ((index * 29) % 180) - 90,
+                          scale: active || reduceMotion ? 1 : 0.35,
+                        }}
+                        transition={{
+                          duration: reduceMotion ? 0 : active ? 0.8 : 0.6,
+                          ease: active ? "easeOut" : "easeIn",
+                          delay: reduceMotion
+                            ? 0
+                            : (order / 143) * 0.18 + (active ? 0.27 : 0),
+                        }}
+                      >
+                        <AvatarImage
+                          alt={
+                            index === 0
+                              ? `${siteConfig.name} profile photo`
+                              : ""
+                          }
+                          src={src}
+                          loading="eager"
+                          className="absolute max-w-none rounded-full object-cover object-center"
+                          style={{
+                            width: "1200%",
+                            height: "1200%",
+                            left: `${-column * 100}%`,
+                            top: `${-row * 100}%`,
+                          }}
+                        />
+                      </motion.span>
+                    );
+                  })}
+                </span>
+              );
+            },
           )}
-        </AnimatePresence>
-
-        <Avatar>
-          <AvatarImage
-            className="h-full w-full object-cover object-center"
-            alt={`${siteConfig.name} avatar`}
-            src={
-              easterState ? siteConfig.easterEggImage : siteConfig.profileImage
-            }
-            loading="eager"
-            fetchPriority="high"
-          />
         </Avatar>
-      </motion.div>
+      </button>
 
       {/* Handwritten annotation — hint before, reveal after */}
       <AnimatePresence mode="wait">
@@ -172,7 +180,7 @@ const ProfileAvatar = ({ codeTime }: { codeTime: CodeTime | null }) => {
       </AnimatePresence>
 
       <ActiveStatus codeTime={codeTime} />
-    </motion.div>
+    </div>
   );
 };
 

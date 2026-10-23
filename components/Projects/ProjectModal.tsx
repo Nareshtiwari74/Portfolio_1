@@ -9,6 +9,8 @@ import { ArrowUpRight, X } from "lucide-react";
 import { motion } from "motion/react";
 
 import ProjectImage from "./ProjectImage";
+import ProjectRibbon from "./ProjectRibbon";
+import ProjectCaseStudy from "./ProjectCaseStudy";
 import ProjectsButton from "./ProjectsButton";
 import type { ProjectType } from "./projectsData";
 import { getStatusTone } from "./projectStatus";
@@ -84,7 +86,7 @@ const ProjectModal = ({
           role="dialog"
           aria-modal="true"
           aria-labelledby="project-modal-title"
-          className="border-line bg-surface-subtle relative z-10 flex max-h-[min(90vh,720px)] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border shadow-2xl"
+          className="border-line bg-surface-subtle relative z-10 flex max-h-[90dvh] w-full max-w-2xl flex-col overflow-y-auto rounded-2xl border shadow-2xl"
           onClick={(e) => e.stopPropagation()}
         >
           <ProjectImage
@@ -97,6 +99,7 @@ const ProjectModal = ({
             height={500}
             overlay
           >
+            {project.badge && <ProjectRibbon label={project.badge} />}
             <button
               type="button"
               onClick={onClose}
@@ -119,7 +122,7 @@ const ProjectModal = ({
             </div>
           </ProjectImage>
 
-          <div className="flex flex-1 flex-col overflow-y-auto overscroll-contain p-6">
+          <div className="flex flex-col p-5 sm:p-6">
             <div className="mb-4 flex items-start justify-between gap-4">
               <div
                 className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium ${statusTone.pill}`}
@@ -155,6 +158,10 @@ const ProjectModal = ({
                   ))}
                 </ul>
               </>
+            )}
+
+            {project.caseStudy && (
+              <ProjectCaseStudy details={project.caseStudy} />
             )}
 
             <SectionLabel>Technologies</SectionLabel>

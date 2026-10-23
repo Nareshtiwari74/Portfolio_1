@@ -13,6 +13,7 @@ export const siteConfig = {
   baseUrl: "https://www.nareshdev.space",
   email: "nareshtiwarilog@gmail.com",
   github: "https://github.com/Nareshtiwari74",
+  linkedin: "https://www.linkedin.com/in/naresh-tiwari/",
   leetcode: "https://leetcode.com/u/tnaresh/",
   x: "https://x.com/NareshTiwai",
   instagram: "https://www.instagram.com/naresh_tiwarioff/",
@@ -20,6 +21,7 @@ export const siteConfig = {
   easterEggImage: "/Logo_easter.webp",
   resumePath: "/Naresh_Tiwari_Resume.pdf" as string | null,
   sameAs: [
+    "https://www.linkedin.com/in/naresh-tiwari/",
     "https://github.com/Nareshtiwari74",
     "https://leetcode.com/u/tnaresh/",
     "https://x.com/NareshTiwai",
