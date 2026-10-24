@@ -12,37 +12,8 @@ import {
 import { Clock } from "lucide-react";
 import { motion, useReducedMotion, type Variants } from "motion/react";
 
-import { createMemoryCache } from "@/lib/memoryCache";
-import { integrationConfig } from "@/lib/site";
-import type { DiscordStatus, LanyardResponse } from "@/types/discord";
 import type { CodeTime } from "@/types/wakatime";
 
-const LANYARD_URL = integrationConfig.discordUserId
-  ? `https://api.lanyard.rest/v1/users/${integrationConfig.discordUserId}`
-  : "";
-
-const REFRESH_MS = 120_000;
-
-const statusCache = createMemoryCache<DiscordStatus>(60_000);
-
-const STATUS_TONES: Record<
-  DiscordStatus,
-  { color: string; glow: string; label: string }
-> = {
-  online: { color: "bg-success", glow: "bg-success/20", label: "Online" },
-  idle: { color: "bg-warning", glow: "bg-warning/20", label: "Idle" },
-  dnd: { color: "bg-danger", glow: "bg-danger/20", label: "Do Not Disturb" },
-  offline: {
-    color: "bg-content-subtle",
-    glow: "bg-content-subtle/20",
-    label: "Offline",
-  },
-};
-
-/**
- * Discord presence and coding time refresh on the client. WakaTime credentials
- * stay on the server; only the coding total is exposed by the local API.
- */
 type Morph = { x: number; y: number; clip: string };
 
 const CARD_RADIUS = 12;
@@ -105,29 +76,6 @@ const fadeCardVariants: Variants = {
   },
 };
 
-async function fetchStatus(): Promise<DiscordStatus | null> {
-  if (!LANYARD_URL) return null;
-  try {
-    const res = await fetch(LANYARD_URL, {
-      cache: "no-store",
-      signal:
-        typeof AbortSignal.timeout === "function"
-          ? AbortSignal.timeout(10_000)
-          : undefined,
-    });
-    if (!res.ok) return null;
-    const body = (await res.json()) as LanyardResponse;
-    const status = body?.data?.discord_status;
-    return body.success === true &&
-      status &&
-      Object.hasOwn(STATUS_TONES, status)
-      ? status
-      : null;
-  } catch {
-    return null;
-  }
-}
-
 const ActiveStatus = ({ codeTime }: { codeTime: CodeTime | null }) => {
   const cardId = useId();
   const reduceMotion = useReducedMotion();
@@ -136,34 +84,6 @@ const ActiveStatus = ({ codeTime }: { codeTime: CodeTime | null }) => {
     CodeTime,
     "hours" | "minutes"
   > | null>(codeTime);
-  const [status, setStatus] = useState<DiscordStatus | null>(() =>
-    statusCache.get(),
-  );
-
-  useEffect(() => {
-    if (!LANYARD_URL) return;
-    let timeoutId: ReturnType<typeof setTimeout>;
-    let cancelled = false;
-
-    const tick = async () => {
-      const cached = statusCache.get();
-      const next = cached ?? (await fetchStatus());
-      if (cancelled) return;
-
-      if (!cached && next) statusCache.set(next);
-      if (!next) statusCache.clear();
-      setStatus(next);
-      timeoutId = setTimeout(tick, REFRESH_MS);
-    };
-
-    tick();
-
-    return () => {
-      cancelled = true;
-      clearTimeout(timeoutId);
-    };
-  }, []);
-
   useEffect(() => {
     let timeoutId: ReturnType<typeof setTimeout>;
     const controller = new AbortController();
@@ -230,13 +150,9 @@ const ActiveStatus = ({ codeTime }: { codeTime: CodeTime | null }) => {
     setIsDisplaying(true);
   };
 
-  const displayStatus = status;
-  const { color, glow } = displayStatus
-    ? STATUS_TONES[displayStatus]
-    : STATUS_TONES.offline;
-  const label = displayStatus
-    ? STATUS_TONES[displayStatus].label
-    : "Status unavailable";
+  const color = "bg-success";
+  const glow = "bg-success/20";
+  const label = "Let’s connect";
 
   return (
     <>

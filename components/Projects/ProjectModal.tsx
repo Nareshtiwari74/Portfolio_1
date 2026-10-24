@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 
 import Link from "next/link";
@@ -9,6 +9,8 @@ import { ArrowUpRight, X } from "lucide-react";
 import { motion } from "motion/react";
 
 import ProjectImage from "./ProjectImage";
+import ProjectRibbon from "./ProjectRibbon";
+import ProjectCaseStudy from "./ProjectCaseStudy";
 import ProjectsButton from "./ProjectsButton";
 import type { ProjectType } from "./projectsData";
 import { getStatusTone } from "./projectStatus";
@@ -36,12 +38,38 @@ const ProjectModal = ({
   onClose: () => void;
 }) => {
   const statusTone = getStatusTone(project.status);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   // A dialog with `aria-modal` has to answer Escape, and the page behind a
   // full-screen overlay should not scroll while it is up.
   useEffect(() => {
+    const previousFocus = document.activeElement;
+    dialogRef.current?.focus();
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
+      if (e.key !== "Tab") return;
+      const dialog = dialogRef.current;
+      if (!dialog) return;
+      const controls = Array.from(
+        dialog.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex="0"]',
+        ),
+      );
+      const first = controls[0];
+      const last = controls.at(-1);
+      if (!first || !last) {
+        e.preventDefault();
+        dialog.focus();
+      } else if (
+        e.shiftKey &&
+        (document.activeElement === first || document.activeElement === dialog)
+      ) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
     const previousOverflow = document.body.style.overflow;
 
@@ -51,6 +79,9 @@ const ProjectModal = ({
     return () => {
       window.removeEventListener("keydown", onKeyDown);
       document.body.style.overflow = previousOverflow;
+      if (previousFocus instanceof HTMLElement && previousFocus.isConnected) {
+        previousFocus.focus();
+      }
     };
   }, [onClose]);
 
@@ -81,10 +112,12 @@ const ProjectModal = ({
         onClick={onClose}
       >
         <div
+          ref={dialogRef}
+          tabIndex={-1}
           role="dialog"
           aria-modal="true"
           aria-labelledby="project-modal-title"
-          className="border-line bg-surface-subtle relative z-10 flex max-h-[min(90vh,720px)] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border shadow-2xl"
+          className="border-line bg-surface-subtle relative z-10 flex max-h-[90dvh] w-full max-w-2xl flex-col overflow-y-auto rounded-2xl border shadow-2xl"
           onClick={(e) => e.stopPropagation()}
         >
           <ProjectImage
@@ -97,6 +130,7 @@ const ProjectModal = ({
             height={500}
             overlay
           >
+            {project.badge && <ProjectRibbon label={project.badge} />}
             <button
               type="button"
               onClick={onClose}
@@ -119,7 +153,7 @@ const ProjectModal = ({
             </div>
           </ProjectImage>
 
-          <div className="flex flex-1 flex-col overflow-y-auto overscroll-contain p-6">
+          <div className="flex flex-col p-5 sm:p-6">
             <div className="mb-4 flex items-start justify-between gap-4">
               <div
                 className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium ${statusTone.pill}`}
@@ -155,6 +189,10 @@ const ProjectModal = ({
                   ))}
                 </ul>
               </>
+            )}
+
+            {project.caseStudy && (
+              <ProjectCaseStudy details={project.caseStudy} />
             )}
 
             <SectionLabel>Technologies</SectionLabel>

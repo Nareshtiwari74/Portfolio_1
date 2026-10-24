@@ -1,6 +1,5 @@
 import Image from "next/image";
 
-import SongActivity from "@/components/HeroSection/SongActivity";
 import { Stagger } from "@/components/ui/Reveal";
 import { introduction, mainSkills } from "@/lib/personal-content";
 import { siteConfig } from "@/lib/site";
@@ -41,6 +40,16 @@ const AboutMe = () => {
                 ),
               )}
             </p>
+            <div className="border-line mb-4 border-l-2 pl-3">
+              <h3 className="mb-1 text-sm font-semibold">Education</h3>
+              <p className="text-content-secondary text-sm">
+                B.Tech in Computer Science and Engineering
+              </p>
+              <p className="text-content-muted mt-1 text-sm">
+                Lovely Professional University, Phagwara
+              </p>
+              <p className="text-content-subtle mt-1 text-xs">2022–2026</p>
+            </div>
             <div>
               <span className="text-sm font-semibold">Skills</span>
               <div className="mt-2 flex flex-wrap gap-2">
@@ -58,9 +67,6 @@ const AboutMe = () => {
               </div>
             </div>
           </div>
-        </div>
-        <div className="px-6">
-          <SongActivity />
         </div>
       </Stagger>
 

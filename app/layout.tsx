@@ -57,7 +57,6 @@ export const viewport: Viewport = {
 };
 
 const THEME_COLOR_DARK = "#100e0e";
-const THEME_COLOR_LIGHT = "#ffffff";
 
 // Script to prevent flash of incorrect theme
 const themeInitScript = `
@@ -66,8 +65,6 @@ const themeInitScript = `
       const savedTheme = localStorage.getItem('theme');
       const isDark = savedTheme !== 'light';
       document.documentElement.classList.toggle('dark', isDark);
-      const meta = document.querySelector('meta[name="theme-color"]');
-      if (meta) meta.setAttribute('content', isDark ? '${THEME_COLOR_DARK}' : '${THEME_COLOR_LIGHT}');
     } catch (e) {}
   })();
 `;
@@ -80,6 +77,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* ThemeProvider updates this after hydration so the initial attributes match. */}
         <meta name="theme-color" content={THEME_COLOR_DARK} />
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <link

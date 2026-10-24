@@ -12,7 +12,13 @@ import TechBadge from "./TechBadge";
 /** Tech chips shown on the card; the rest roll into a "+N" chip. */
 const MAX_VISIBLE_TECH = 2;
 
-const ProjectCard = ({ project }: { project: ProjectType }) => {
+const ProjectCard = ({
+  project,
+  onViewCaseStudy,
+}: {
+  project: ProjectType;
+  onViewCaseStudy: () => void;
+}) => {
   const [showAllTech, setShowAllTech] = useState(false);
   const {
     name,
@@ -72,7 +78,7 @@ const ProjectCard = ({ project }: { project: ProjectType }) => {
         </p>
 
         {/* Tech Stack & Links */}
-        <div className="mt-auto flex items-center justify-between gap-3 pt-6">
+        <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-6">
           <div
             id={technologiesId}
             className="flex flex-wrap items-center gap-2"
@@ -102,6 +108,18 @@ const ProjectCard = ({ project }: { project: ProjectType }) => {
           </div>
           <ProjectsButton githubLink={githubLink} link={link} />
         </div>
+        <button
+          type="button"
+          aria-haspopup="dialog"
+          aria-label={`Read case study for ${name}`}
+          onClick={(event) => {
+            event.stopPropagation();
+            onViewCaseStudy();
+          }}
+          className="btn-chunky border-line-strong text-content mt-4 w-full cursor-pointer rounded-xl border px-4 py-2.5 text-sm font-medium focus-visible:outline-2 focus-visible:outline-offset-4"
+        >
+          Read Case Study
+        </button>
       </div>
     </div>
   );

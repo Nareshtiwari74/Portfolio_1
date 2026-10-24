@@ -1,4 +1,12 @@
-import { Code } from "lucide-react";
+"use client";
+
+import { useState } from "react";
+
+import { ArrowUpRight } from "lucide-react";
+import { AnimatePresence } from "motion/react";
+
+import ProjectModal from "@/components/Projects/ProjectModal";
+import { projects } from "@/components/Projects/projectsData";
 
 const MacFolderIcon = ({ size }: { size: number }) => (
   <svg
@@ -16,25 +24,55 @@ const MacFolderIcon = ({ size }: { size: number }) => (
 );
 
 /** Confirmed featured project under the hero. */
-const PersonalInfo = () => (
-  <div className="col-span-2 my-5 flex items-center justify-between gap-4 rounded-xl border p-4">
-    <div className="flex items-center gap-3">
-      <div className="relative">
-        <div className="bg-success/20 absolute -inset-1 animate-pulse rounded-full" />
-        <div className="bg-success relative z-10 h-2 w-2 rounded-full" />
-      </div>
-      <div className="flex flex-col">
-        <span className="text-xs font-medium tracking-wider uppercase">
-          Featured Project
+const PersonalInfo = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const project = projects.find(
+    (item) => item.id === "distributed-file-storage",
+  );
+  if (!project) return null;
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setIsOpen(true)}
+        aria-haspopup="dialog"
+        className="group border-line hover:border-line-strong hover:bg-surface-raised relative my-5 flex w-full cursor-pointer items-center justify-between gap-4 rounded-xl border p-4 pt-11 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
+      >
+        <span className="backend-ribbon absolute top-0 left-0 overflow-hidden rounded-tl-xl rounded-br-xl bg-[#ABEC4D] px-4 py-1.5 text-[10px] font-bold tracking-widest text-neutral-950 uppercase">
+          Backend
         </span>
-        <span className="flex items-center gap-1 text-sm font-medium">
-          <MacFolderIcon size={16} />
-          Distributed File Storage System
+        <span className="flex min-w-0 items-center gap-3">
+          <span
+            className="bg-success size-2 shrink-0 rounded-full"
+            aria-hidden="true"
+          />
+          <span className="flex min-w-0 flex-col gap-1">
+            <span className="text-content-muted text-xs font-medium tracking-wider uppercase">
+              Featured Project
+            </span>
+            <span className="text-content flex items-start gap-2 text-sm font-semibold">
+              <MacFolderIcon size={16} />
+              {project.name}
+            </span>
+            <span className="text-content-muted text-xs">
+              Explore the architecture & key features
+            </span>
+          </span>
         </span>
-      </div>
-    </div>
-    <Code size={18} className="text-content-secondary" aria-hidden />
-  </div>
-);
+        <ArrowUpRight
+          size={18}
+          className="text-content-secondary shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+          aria-hidden="true"
+        />
+      </button>
+      <AnimatePresence>
+        {isOpen && (
+          <ProjectModal project={project} onClose={() => setIsOpen(false)} />
+        )}
+      </AnimatePresence>
+    </>
+  );
+};
 
 export default PersonalInfo;

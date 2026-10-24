@@ -1,5 +1,7 @@
 import { type ReactNode } from "react";
 
+import Image from "next/image";
+
 export type Role = {
   id: string;
   /** Logo shown in the leading circle. */
@@ -22,7 +24,15 @@ export type Role = {
 export const roles: Role[] = [
   {
     id: "zynkly-intern",
-    logo: "Z",
+    logo: (
+      <Image
+        src="/zynkly-logo.jpg"
+        alt="Zynkly logo"
+        width={40}
+        height={12}
+        className="h-auto w-full object-contain"
+      />
+    ),
     org: "Zynkly",
     role: "AI/ML Engineer Intern",
     period: "Apr 2026 – Jul 2026",
@@ -35,7 +45,15 @@ export const roles: Role[] = [
   },
   {
     id: "mphasis-intern",
-    logo: "M",
+    logo: (
+      <Image
+        src="/mphasis-logo.png"
+        alt="Mphasis logo"
+        width={40}
+        height={14}
+        className="h-auto w-full object-contain"
+      />
+    ),
     org: "Mphasis",
     role: "Software Development Intern",
     period: "Jan 2026 – Apr 2026",

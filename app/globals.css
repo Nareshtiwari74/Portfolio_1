@@ -6,6 +6,38 @@
 @import "./editorial.css";
 
 @custom-variant dark (&:is(.dark *));
+
+.backend-ribbon::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 25%,
+    #ffffffa6 50%,
+    transparent 75%
+  );
+  transform: translateX(-150%);
+  animation: backend-ribbon-shimmer 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes backend-ribbon-shimmer {
+  0%,
+  65% {
+    transform: translateX(-150%);
+  }
+  100% {
+    transform: translateX(150%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backend-ribbon::after {
+    animation: none;
+  }
+}
+
 @font-face {
   font-family: "hanken";
   src: url("/HankenGrotesk-Variable.ttf");
