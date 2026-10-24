@@ -2,6 +2,7 @@ import type { ProjectGradient } from "./ProjectImage";
 
 export type ProjectType = {
   id: string;
+  featured?: boolean;
   name: string;
   tagline: string;
   /** Full write-up, shown in the project modal. */
@@ -24,6 +25,7 @@ export type ProjectType = {
   apiLink?: string;
   githubLink: string;
   caseStudy?: {
+    decisions?: { title: string; detail: string }[];
     highlights: { title: string; detail: string }[];
     flow: { title: string; detail: string }[];
     deployment: string;
@@ -45,13 +47,14 @@ export const GRADIENT_FROM = "#f5f5f5";
 export const projects: ProjectType[] = [
   {
     id: "distributed-file-storage",
+    featured: true,
     name: "Distributed File Storage System",
     tagline: "Secure File Storage",
     badge: "Backend",
     description:
       "A full-stack file storage application built with Java 21 and Spring Boot. Files live in S3-compatible object storage, while PostgreSQL tracks their metadata and ownership.",
     shortDescription:
-      "Secure file uploads with JWT authentication, per-user access, and S3-compatible cloud storage. Built with Java 21, Spring Boot, and React.",
+      "Upload, download, and manage private files. A Spring Boot API checks ownership on file operations, with PostgreSQL metadata and S3-compatible storage.",
     image: "/project-img/distributed-file-storage.png",
     imageGradient: { from: GRADIENT_FROM, via: "#ABEC4D", to: "#A3E925" },
     tech: ["Java", "Spring Boot", "React", "PostgreSQL", "Docker"],
@@ -60,6 +63,23 @@ export const projects: ProjectType[] = [
     apiLink: "https://api1.nareshdev.space",
     githubLink: "https://github.com/Nareshtiwari74/distributed-file-storage",
     caseStudy: {
+      decisions: [
+        {
+          title: "Separate file bytes from metadata",
+          detail:
+            "Object storage holds the files while PostgreSQL tracks ownership and metadata. This keeps binary data out of relational tables, but requires coordinating writes across two services.",
+        },
+        {
+          title: "Keep storage behind an interface",
+          detail:
+            "StorageService supports MinIO locally and Supabase in production. This makes providers replaceable, while each adapter still needs testing against its provider's behavior.",
+        },
+        {
+          title: "Start with a modular monolith",
+          detail:
+            "The current backend keeps authentication, validation, and file operations in one application. This simplifies deployment; replication and failover remain future work.",
+        },
+      ],
       highlights: [
         {
           title: "Private by design",

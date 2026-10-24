@@ -28,7 +28,15 @@ const onlineProfiles = [
   {
     name: "LinkedIn",
     url: siteConfig.linkedin,
-    logo: <Linkedin size={20} aria-hidden="true" />,
+    logo: (
+      <Image
+        src="/linkedin.png"
+        alt=""
+        width={20}
+        height={20}
+        className="size-5 object-contain"
+      />
+    ),
   },
   {
     name: "GitHub",

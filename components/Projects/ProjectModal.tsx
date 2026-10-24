@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 
 import Link from "next/link";
@@ -38,12 +38,38 @@ const ProjectModal = ({
   onClose: () => void;
 }) => {
   const statusTone = getStatusTone(project.status);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   // A dialog with `aria-modal` has to answer Escape, and the page behind a
   // full-screen overlay should not scroll while it is up.
   useEffect(() => {
+    const previousFocus = document.activeElement;
+    dialogRef.current?.focus();
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
+      if (e.key !== "Tab") return;
+      const dialog = dialogRef.current;
+      if (!dialog) return;
+      const controls = Array.from(
+        dialog.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex="0"]',
+        ),
+      );
+      const first = controls[0];
+      const last = controls.at(-1);
+      if (!first || !last) {
+        e.preventDefault();
+        dialog.focus();
+      } else if (
+        e.shiftKey &&
+        (document.activeElement === first || document.activeElement === dialog)
+      ) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
     const previousOverflow = document.body.style.overflow;
 
@@ -53,6 +79,9 @@ const ProjectModal = ({
     return () => {
       window.removeEventListener("keydown", onKeyDown);
       document.body.style.overflow = previousOverflow;
+      if (previousFocus instanceof HTMLElement && previousFocus.isConnected) {
+        previousFocus.focus();
+      }
     };
   }, [onClose]);
 
@@ -83,6 +112,8 @@ const ProjectModal = ({
         onClick={onClose}
       >
         <div
+          ref={dialogRef}
+          tabIndex={-1}
           role="dialog"
           aria-modal="true"
           aria-labelledby="project-modal-title"

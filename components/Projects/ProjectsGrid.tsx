@@ -45,6 +45,13 @@ const ProjectsGrid = ({
 
   const visibleProjects = showAll ? projects : projects.slice(0, initialCount);
   const hasMore = projects.length > initialCount;
+  const openProject = (project: ProjectType) => {
+    posthog.capture("project_modal_opened", {
+      project_name: project.name,
+      project_status: project.status,
+    });
+    setSelectedProject(project);
+  };
 
   return (
     <>
@@ -63,13 +70,7 @@ const ProjectsGrid = ({
           <motion.div
             key={project.id}
             className="h-full cursor-pointer"
-            onClick={() => {
-              posthog.capture("project_modal_opened", {
-                project_name: project.name,
-                project_status: project.status,
-              });
-              setSelectedProject(project);
-            }}
+            onClick={() => openProject(project)}
             initial={revealHidden}
             whileInView={revealShown(
               reduceMotion,
@@ -80,7 +81,10 @@ const ProjectsGrid = ({
             )}
             viewport={revealViewport}
           >
-            <ProjectCard project={project} />
+            <ProjectCard
+              project={project}
+              onViewCaseStudy={() => openProject(project)}
+            />
           </motion.div>
         ))}
       </div>

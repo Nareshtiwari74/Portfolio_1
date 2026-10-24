@@ -33,9 +33,13 @@ const Projects = () => {
         </Link>
       </Reveal>
 
+      <p className="text-content-muted mt-3 max-w-xl text-sm leading-relaxed">
+        Selected backend work, with implementation details, architecture, and
+        engineering tradeoffs.
+      </p>
       <ProjectsGrid
-        projects={projects}
-        initialCount={4}
+        projects={projects.filter((project) => project.featured)}
+        initialCount={3}
         viewAllHref="/projects"
       />
 

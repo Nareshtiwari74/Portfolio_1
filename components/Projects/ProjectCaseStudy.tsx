@@ -9,6 +9,28 @@ export default function ProjectCaseStudy({
 }) {
   return (
     <div className="mb-6 space-y-6">
+      {details.decisions && details.decisions.length > 0 && (
+        <section aria-label="Engineering decisions">
+          <h3 className="text-content mb-3 text-sm font-semibold">
+            Engineering decisions
+          </h3>
+          <div className="space-y-3">
+            {details.decisions.map((decision) => (
+              <div
+                key={decision.title}
+                className="border-line rounded-xl border p-4"
+              >
+                <h4 className="text-content text-sm font-medium">
+                  {decision.title}
+                </h4>
+                <p className="text-content-muted mt-2 text-xs leading-relaxed">
+                  {decision.detail}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
       <section
         aria-label="Project highlights"
         className="grid gap-3 sm:grid-cols-2"
